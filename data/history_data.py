@@ -3,7 +3,6 @@ import baostock as bs
 import pymongo
 import pandas as pd
 from pymongo import UpdateOne
-from pymongo.message import update
 
 
 
@@ -42,11 +41,9 @@ for codeItem in codeCol.find({}):
         data_list.append(rs1.get_row_data())
     result1 = pd.DataFrame(data_list, columns=rs1.fields)
 
-    result["hfqopen"]=result1['open']
-    result["hfqhigh"]=result1['high']
-    result["hfqlow"]=result1["low"]
-    result["hfqclose"]=result1["close"]
-    result["hfqpreclose"]=result1["preclose"]
+    hfqData = [ i for i in ["open","high","low","close","preclose"]  if i in result1.columns]
+    for  hfq in hfqData:
+        result["hfq"+hfq] = result1[hfq]
     updateOp=[]
     for index, row in result.iterrows():
         myquery = {"code": codeItem["code"],"region": codeItem["region"], "date": row["date"]}
@@ -57,9 +54,7 @@ for codeItem in codeCol.find({}):
         newvalues = {"$setOnInsert": valueItem}
         op = UpdateOne(myquery, {'$set': valueItem}, upsert=True)
         updateOp.append(op)
-
-        # historyCol.update_one(myquery, newvalues, upsert=True)
-historyCol.bulk_write(updateOp)
+    bulkRes = historyCol.bulk_write(updateOp)
 #### 登出系统 ####
 bs.logout()
 
