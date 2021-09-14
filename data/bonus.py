@@ -16,8 +16,8 @@ endYear = datetime.datetime.now().year
 colRes = codeCol.find({"code":"600000"},{"_id":0,"code":1,"region":1,"bonusUpdateDate":1})
 for codeItem in colRes:
     rs_list = []
-    startYear = codeItem["bonusUpdateDate"] -1  if  "bonusUpdateDate" in codeItem else startYear
-    for  year in range( startYear ,endYear):
+    # startYear = codeItem["bonusUpdateDate"] -1  if  "bonusUpdateDate" in codeItem else startYear
+    for  year in range( startYear ,endYear+1):
         rs_dividend = bs.query_dividend_data(code=codeItem["region"]+"."+codeItem["code"], year=year, yearType="report")
         while (rs_dividend.error_code == '0') & rs_dividend.next():
             rs_list.append(rs_dividend.get_row_data())

@@ -6,7 +6,7 @@ lg = bs.login()
 
 
 rs_list = []
-rs_dividend_2015 = bs.query_dividend_data(code="sh.600000", year="2015", yearType="report")
+rs_dividend_2015 = bs.query_dividend_data(code="sh.600000", year="2021", yearType="report")
 while (rs_dividend_2015.error_code == '0') & rs_dividend_2015.next():
     rs_list.append(rs_dividend_2015.get_row_data())
 

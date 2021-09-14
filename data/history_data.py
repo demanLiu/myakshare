@@ -13,7 +13,7 @@ db = client["stock"]
 codeCol = db["stockcode"]
 historyCol = db["history"]
 
-startDate = '2021-09-01'
+startDate = '2021-01-01'
 endDate = '2021-09-10'
 threadNum=1
 
@@ -61,9 +61,17 @@ def writeToMonogo(codeList):
         except Exception as err:
             print(codeItem["code"]+": error ") 
             traceback.print_exc()
+            pass
     bs.logout()
 
-codeList = list(codeCol.find({},{"_id":0,"code":1,"region":1,"historyUpdateDate":1}))
+# codeList = list(codeCol.find({},{"_id":0,"code":1,"region":1,"historyUpdateDate":1}))
+
+match_dict = {"$match": {"count": {"$lt":170}}}
+group_dict = {"$group":{"_id":"$code","count":{"$sum":1}}}
+result = historyCol.aggregate([group_dict,match_dict])
+codeList=[]
+for i in result:
+    codeList.append(codeCol.find_one({"code":i["_id"]},{"_id":0,"code":1,"region":1,"historyUpdateDate":1}))
 splitNum=int(len(codeList)/threadNum)
 taskList =  [codeList[i:i+splitNum] for i in range(0,len(codeList),splitNum)]
 executor = ThreadPoolExecutor(max_workers=threadNum)
