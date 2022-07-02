@@ -13,12 +13,21 @@ db = client["stock"]
 codeCol = db["stockcode"]
 historyCol = db["history"]
 
-startDate = '2021-01-01'
-endDate = '2021-09-10'
-threadNum=1
+
+startDate = '2019-06-01'
+endDate = '2019-06-20'
+# threadNum=1
+# executor = ThreadPoolExecutor(max_workers=threadNum) 
+
+
+def  realDo(updateOp,codeItem):
+    bulkRes = historyCol.bulk_write(updateOp)
+    codeColQuery= { "code": codeItem["code"],"region": codeItem["region"] }
+    codeColUpdateTime = { "$set": { "historyUpdateDate": time.strptime(startDate, '%Y-%m-%d').tm_year,"historylastUpdatedTime": codeItem["historyUpdateDate"]  if "historyUpdateDate" in codeItem else "" } }
+    codeCol.update_one(codeColQuery,codeColUpdateTime)
 
 def writeToMonogo(codeList):
-    lg = bs.login()
+    bs.login()
     for codeItem in codeList:
         try:
             rs = bs.query_history_k_data_plus(codeItem["region"]+"."+codeItem["code"],
@@ -54,32 +63,44 @@ def writeToMonogo(codeList):
                 valueItem["code"]=codeItem["code"]
                 op = UpdateOne(myquery, {'$set': valueItem}, upsert=True)
                 updateOp.append(op)
-            bulkRes = historyCol.bulk_write(updateOp)
-            codeColQuery= { "code": codeItem["code"],"region": codeItem["region"] }
-            codeColUpdateTime = { "$set": { "historyUpdateDate": time.strptime(startDate, '%Y-%m-%d').tm_year,"historylastUpdatedTime": codeItem["historyUpdateDate"]  if "historyUpdateDate" in codeItem else "" } }
-            codeCol.update_one(codeColQuery,codeColUpdateTime)
+            if len(updateOp)>0:
+                bulkRes = historyCol.bulk_write(updateOp)
+                codeColQuery= { "code": codeItem["code"],"region": codeItem["region"] }
+                codeColUpdateTime = { "$set": { "historyUpdateDate": time.strptime(startDate, '%Y-%m-%d').tm_year,"historylastUpdatedTime": codeItem["historyUpdateDate"]  if "historyUpdateDate" in codeItem else "" } }
+                codeCol.update_one(codeColQuery,codeColUpdateTime)
         except Exception as err:
             print(codeItem["code"]+": error ") 
             traceback.print_exc()
             pass
     bs.logout()
 
-# codeList = list(codeCol.find({},{"_id":0,"code":1,"region":1,"historyUpdateDate":1}))
-
-match_dict = {"$match": {"count": {"$lt":170}}}
-group_dict = {"$group":{"_id":"$code","count":{"$sum":1}}}
-result = historyCol.aggregate([group_dict,match_dict])
-codeList=[]
-for i in result:
-    codeList.append(codeCol.find_one({"code":i["_id"]},{"_id":0,"code":1,"region":1,"historyUpdateDate":1}))
-splitNum=int(len(codeList)/threadNum)
-taskList =  [codeList[i:i+splitNum] for i in range(0,len(codeList),splitNum)]
-executor = ThreadPoolExecutor(max_workers=threadNum)
-with ThreadPoolExecutor(max_workers=threadNum) as executor:
-    tasks = [executor.submit(writeToMonogo, eachList) for eachList in taskList]
-    for future in as_completed(tasks):
-        print("in main: get page {}s success".format(future.done()))
-    print("all_cone")
 
 
+
+codeList = list(codeCol.find({},{"_id":0,"code":1,"region":1,"historyUpdateDate":1}))
+# group having
+# match_dict = {"$match": {"count": {"$lt":170}}}
+# group_dict = {"$group":{"_id":"$code","count":{"$sum":1}}}
+# result = historyCol.aggregate([group_dict,match_dict])
+# codeList=[]
+# for i in result:
+#     codeList.append(codeCol.find_one({"code":["_id"]},{"_id":0,"code":1,"region":1,"historyUpdateDate":1}))
+
+
+# doneList = list(historyCol.find({"date":"2019-07-10"},{"_id":0,"code":1}))
+# for delItem in doneList:
+#     for temp in codeList:
+#         if(temp["code"]==delItem["code"]):
+#             codeList.remove(temp)
+writeToMonogo(codeList)
+
+
+# splitNum=int(len(codeList)/threadNum)
+# taskList =  [codeList[i:i+splitNum] for i in range(0,len(codeList),splitNum)]
+# executor = ThreadPoolExecutor(max_workers=threadNum)
+# with ThreadPoolExecutor(max_workers=threadNum) as executor:
+#     tasks = [executor.submit(writeToMonogo, eachList) for eachList in taskList]
+#     for future in as_completed(tasks):
+#         print("in main: get page {}s success".format(future.done()))
+#     print("all_cone")
 

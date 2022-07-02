@@ -16,8 +16,9 @@ print(stock_sse_deal_daily_df.loc[0]["股票"])
 
 
 stock_zh_a_hist_df = ak.stock_zh_a_hist(
-    symbol="603777", start_date="20210301", end_date='20210616')
-
+    symbol="000001", start_date="20210901", end_date='20210916')
+stock_zh_index_daily_df = ak.stock_zh_index_daily(symbol="sh000001")
+print(stock_zh_index_daily_df)
 
 plt.figure(figsize=(8000, 50))
 plt.plot(stock_zh_a_hist_df["日期"],
