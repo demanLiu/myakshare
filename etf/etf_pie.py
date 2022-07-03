@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 
 import property_top_category
 
+import yaml
+
+
 plt.rcParams['font.sans-serif']=['WenQuanYi Micro Hei']
 
 # mpl.rcParams['font.family'] = 'SimHei'# 同时绘制2个饼图
