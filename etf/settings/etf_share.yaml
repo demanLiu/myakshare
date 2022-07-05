@@ -1,0 +1,71 @@
+compose:
+  - name: ChinaStock
+    share: 60
+    members: 
+      #易方达红利
+    - code: 515180
+      share: 10
+      # 500增强
+    - code: 502000
+      share: 10
+      #富国300
+    - code: 516830
+      share: 10
+      #上证50
+    - code: 510050
+      share: 10
+      #龙头券商
+    - code: 159993
+      share: 10
+      #汇添富消费
+    - code: 159928
+      share: 10
+      #金融地产
+    - code: 159940
+      share: 10
+      #医药健康
+    - code: 515960
+      share: 10
+      #军工etf
+    - code: 512660
+      share: 10
+      #创新药
+    - code: 159992
+      share: 10
+      #沪深300
+    - code: 510310
+      share: 10  
+      #传媒etf
+    - code: 512980
+      share: 10
+  - name: OverSeaNewMarket
+    share: 10
+    members: 
+       #恒生etf
+    - code: 159920
+      share: 10
+      #恒生医疗
+    - code: 513060
+      share: 10
+      #恒生科技
+    - code: 513130
+      share: 10
+      #印度LOF
+    - code: 164824
+      share: 10
+  - name: GOLD
+    share: 2
+    members: 
+       #黄金etf
+    - code: 518880
+      share: 10
+  - name: OverSeaMature
+    share: 10
+    members: 
+       #标普500
+    - code: 513500
+      share: 10
+      #德国
+    - code: 513030
+      share: 10
+      
