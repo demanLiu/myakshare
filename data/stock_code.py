@@ -8,7 +8,7 @@ mycol = mydb["stockcode"]
 # stock_info_a_code_name_df = ak.stock_info_a_code_name()
 stock_info_sh_df = ak.stock_info_sh_name_code(indicator="主板A股")
 
-for code ,name in zip(stock_info_sh_df["COMPANY_CODE"],stock_info_sh_df["COMPANY_ABBR"]):
+for code ,name in zip(stock_info_sh_df["证券代码"],stock_info_sh_df["证券简称"]):
     myquery = { "code": code }
     newvalues = { "$setOnInsert": { "name": name ,"region":"sh"} }
     mycol.update_one(myquery,newvalues,upsert=True)
