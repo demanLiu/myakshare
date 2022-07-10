@@ -5,9 +5,11 @@ compose:
       #易方达红利
     - code: 515180
       share: 10
+      trace: 000922
       # 500增强
     - code: 502000
       share: 10
+      trace: 000905
       #富国300
     - code: 516830
       share: 10
