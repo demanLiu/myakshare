@@ -13,33 +13,44 @@ compose:
       #富国300
     - code: 516830
       share: 10
+      starce: 931382
       #上证50
     - code: 510050
       share: 10
+      starce: 000016
       #龙头券商
     - code: 159993
       share: 10
+      #国证
+      starce: 399437
       #汇添富消费
     - code: 159928
       share: 10
+      strace: 000932
       #金融地产
     - code: 159940
       share: 10
+      starce: 000992
       #医药健康
     - code: 515960
       share: 10
+      strace: 515960
       #军工etf
     - code: 512660
       share: 10
+      starce: 399967
       #创新药
     - code: 159992
       share: 10
+      starce: 931152
       #沪深300
     - code: 510310
       share: 10  
+      starce: 000300
       #传媒etf
     - code: 512980
       share: 10
+      starce: 399971
   - name: OverSeaNewMarket
     share: 10
     members: 
