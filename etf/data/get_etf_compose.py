@@ -1,17 +1,11 @@
-import imp
 from signal import valid_signals
 import akshare as ak
 import sys
 sys.path.append(".")
 from data.get_stock_by_code import writeToMonogo
-import pymongo
 from pymongo import UpdateOne
-
-client = pymongo.MongoClient("mongodb://localhost:27017/")
-db = client["stock"]
-etfCol = db["etf"]
-
-
+import utils.mongodbUtil as mongodbUtil
+etfCol =  mongodbUtil.getCol("stock","etf")
 
 code = "515180"
 date="2021"
@@ -30,7 +24,7 @@ for index,data in fund_portfolio_hold_em_df.iterrows():
         valueItem["endDate"] = date+"-03-31"
         op = UpdateOne(myquery, {'$setOnInsert': valueItem}, upsert=True)
         updateOp.append(op)
-        writeToMonogo(data['股票代码'])
+        # writeToMonogo(data['股票代码'])
     if data["季度"].startswith(date+"年2") :
         myquery = {"etf_code": code, "date":date+"-2","child_code":data["股票代码"] }
         valueItem={}
@@ -42,7 +36,7 @@ for index,data in fund_portfolio_hold_em_df.iterrows():
         valueItem["endDate"] = date+"-06-30"
         op = UpdateOne(myquery, {'$setOnInsert': valueItem}, upsert=True)
         updateOp.append(op)
-        writeToMonogo(data['股票代码'])
+        # writeToMonogo(data['股票代码'])
     if data["季度"].startswith(date+"年3") :
         myquery = {"etf_code": code, "date":date+"-3","child_code":data["股票代码"] }
         valueItem={}
@@ -54,7 +48,7 @@ for index,data in fund_portfolio_hold_em_df.iterrows():
         valueItem["endDate"] = date+"-09-30"
         op = UpdateOne(myquery, {'$setOnInsert': valueItem}, upsert=True)
         updateOp.append(op)
-        writeToMonogo(data['股票代码'])
+        # writeToMonogo(data['股票代码'])
     if data["季度"].startswith(date+"年4") :
         myquery = {"etf_code": code, "date":date+"-4","child_code":data["股票代码"] }
         valueItem={}
@@ -66,7 +60,7 @@ for index,data in fund_portfolio_hold_em_df.iterrows():
         valueItem["endDate"] = date+"-12-31"
         op = UpdateOne(myquery, {'$setOnInsert': valueItem}, upsert=True)
         updateOp.append(op)
-        writeToMonogo(data['股票代码'])
+        # writeToMonogo(data['股票代码'])
 
 etfCol.bulk_write(updateOp)
 

@@ -1,14 +1,28 @@
 
 import akshare as ak
-import pymongo
+import sys
+sys.path.append(".")
+import utils.mongodbUtil as mongodbUtil
+from pymongo import UpdateOne
 
-# myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-# ddblist = myclient.list_database_names()
-# print(ddblist)
+col = mongodbUtil.getCol("stock","gdp")
 
-lastDate = "2020-01-01"
 gdp = ak.macro_china_gdp()
 date = gdp.iloc[:, 0]
-addData = gdp[gdp["季度"]>=lastDate]
-for row1, row2 in  zip(addData[gdp.columns[0]],addData[gdp.columns[1]]):
-    print(row1,row2)
+updateOp=[]
+for index,row in  gdp.iterrows():
+    myquery = {"date": row[0] }
+    valueItem={}
+    valueItem["date"] = row[0]
+    valueItem["gdp"]=row[1]
+    valueItem["grow_rate"] = row[2]
+    valueItem["first_amount"] = row[3]
+    valueItem["first_grow"] = row[4]
+    valueItem["second_amount"] = row[5]
+    valueItem["second_grow"] = row[6]
+    valueItem["third_amount"] = row[7]
+    valueItem["third_grow"] = row[8]
+    op = UpdateOne(myquery, {'$setOnInsert': valueItem}, upsert=True)
+    updateOp.append(op)
+
+col.bulk_write(updateOp)
