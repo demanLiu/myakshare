@@ -6,7 +6,6 @@ import akshare as ak
 from pymongo import UpdateOne
 
 historyCol = mongodbUtil.getCol("stock", "importIndex")
-# 
 
 
 def writeMongo(code, region, data):

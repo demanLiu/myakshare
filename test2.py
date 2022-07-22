@@ -1,5 +1,4 @@
 from cProfile import label
-import imp
 import time
 import akshare as ak
 import matplotlib.pyplot as plt
@@ -7,8 +6,8 @@ from scipy import interpolate
 import numpy as np
 from scipy.misc import derivative
 
-stock_sse_summary_df = ak.stock_sse_summary()
-print(stock_sse_summary_df)
+# stock_sse_summary_df = ak.stock_sse_summary()
+# print(stock_sse_summary_df)
 
 
 stock_sse_deal_daily_df = ak.stock_sse_deal_daily(date="20210903")
