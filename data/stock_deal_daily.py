@@ -1,17 +1,16 @@
 
 import sys
-
-from black import err
 sys.path.append(".")
-import utils.mongodbUtil as mongodbUtil
-from datetime import datetime, timedelta
-import akshare as ak
-from pymongo import UpdateOne
-import calendar
+from datetime import datetime, timedelta, date
 import time
-start = "20190826"
-end1 = "20211224"
+import calendar
+from pymongo import UpdateOne
+import akshare as ak
+import utils.mongodbUtil as mongodbUtil
 
+start =  "20220722"
+end1 = "20211224"
+end = date.today().strftime("%Y%m%d")
 col = mongodbUtil.getCol("stock", "daily_deal")
 
 
@@ -21,18 +20,21 @@ def sh_deal_daily(start, end1, col):
     for i in range(10000):
         try:
             date = startDate + timedelta(days=i)
-            year= date.year
+            if date.strftime("%Y%m%d") > end:
+                break
+            year = date.year
             month = date.month
             day = date.day
-            currentday =calendar.weekday(year,month,day)
-            if currentday>=5:
+            currentday = calendar.weekday(year, month, day)
+            if currentday >= 5:
                 continue
-            stock_sse_deal_daily_df = ak.stock_sse_deal_daily(date=date.strftime("%Y%m%d"))
+            stock_sse_deal_daily_df = ak.stock_sse_deal_daily(
+                date=date.strftime("%Y%m%d"))
             valueItem = {}
             valueItem["date"] = date.strftime("%Y%m%d")
-            myquery = { "date": valueItem["date"],"type":"sh"}
+            myquery = {"date": valueItem["date"], "type": "sh"}
             if date.strftime("%Y%m%d") > end1:
-                valueItem={}
+                valueItem = {}
                 valueItem["market_amount"] = stock_sse_deal_daily_df.iat[0, 1]
                 valueItem["deal_amount"] = stock_sse_deal_daily_df.iat[3, 1]
                 valueItem["deal_nums"] = stock_sse_deal_daily_df.iat[2, 1]
@@ -46,55 +48,59 @@ def sh_deal_daily(start, end1, col):
                 valueItem["exchange"] = stock_sse_deal_daily_df.at[9, "股票"]
             op = UpdateOne(myquery, {'$setOnInsert': valueItem}, upsert=True)
             updateOp.append(op)
-            time.sleep( 2 )
+            time.sleep(2)
         except Exception as err:
             print("err:"+date.strftime("%Y%m%d"))
+            print(err)
             if len(updateOp) > 0:
                 col.bulk_write(updateOp)
-                updateOp=[]
+                updateOp = []
             pass
     if len(updateOp) > 0:
         col.bulk_write(updateOp)
 
-def sz_deal_daily(start, end1, col):
+
+def sz_deal_daily(start,  col):
     startDate = datetime.strptime(start, "%Y%m%d")
     updateOp = []
     for i in range(10000):
         try:
             date = startDate + timedelta(days=i)
-            year= date.year
+            if date.strftime("%Y%m%d") > end:
+                break
+            year = date.year
             month = date.month
             day = date.day
-            currentday =calendar.weekday(year,month,day)
-            if currentday>=5:
+            currentday = calendar.weekday(year, month, day)
+            if currentday >= 5:
                 continue
-            stock_sse_deal_daily_df = ak.stock_szse_summary(date=date.strftime("%Y%m%d"))
+            stock_sse_deal_daily_df = ak.stock_szse_summary(
+                date=date.strftime("%Y%m%d"))
             valueItem = {}
             valueItem["date"] = date.strftime("%Y%m%d")
-            myquery = { "date": valueItem["date"],"type":"sz"}
+            myquery = {"date": valueItem["date"], "type": "sz"}
             valueItem["market_amount"] = stock_sse_deal_daily_df.iat[0, 3]/100000000
             valueItem["deal_amount"] = stock_sse_deal_daily_df.iat[0, 2]/100000000
             op = UpdateOne(myquery, {'$setOnInsert': valueItem}, upsert=True)
             updateOp.append(op)
             valueItem = {}
             valueItem["date"] = date.strftime("%Y%m%d")
-            myquery = { "date": valueItem["date"],"type":"secondSZ"}
+            myquery = {"date": valueItem["date"], "type": "secondSZ"}
             valueItem["market_amount"] = stock_sse_deal_daily_df.iat[3, 3]/100000000
             valueItem["deal_amount"] = stock_sse_deal_daily_df.iat[3, 2]/100000000
             op = UpdateOne(myquery, {'$setOnInsert': valueItem}, upsert=True)
             updateOp.append(op)
-            time.sleep( 2 )
+            time.sleep(2)
         except Exception as err:
             print("err:"+date.strftime("%Y%m%d"))
+            print(err)
             if len(updateOp) > 0:
                 col.bulk_write(updateOp)
-                updateOp=[]
+                updateOp = []
             pass
     if len(updateOp) > 0:
         col.bulk_write(updateOp)
 
-#2022-07-22
-# sh_deal_daily(start, end1, col)
-
-
-sz_deal_daily(start, end1, col)
+# 2022-07-22
+sh_deal_daily(start, end1, col)
+sz_deal_daily(start,  col)
