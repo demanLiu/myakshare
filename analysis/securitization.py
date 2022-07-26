@@ -1,7 +1,8 @@
 import sys
 sys.path.append(".")
 import utils.mongodbUtil as mongodbUtil
-from  datetime import datetime
+from  datetime import datetime,timedelta
+from dateutil.relativedelta import relativedelta
 gdpCol = mongodbUtil.getCol("stock","gdp")
 dailyCol = mongodbUtil.getCol("stock","daily_deal")
 
@@ -13,7 +14,9 @@ def  getGdpDate(year, quarter):
         return str(year)+'-12-01'
     return str(year)+'-0'+ str(quarter*3)+'-01'
 
-gdpCursor = gdpCol.find({"date":{"$gt":"2019-03-01"}}).sort("date",1)
+
+
+gdpCursor = gdpCol.find({"date":{"$gt":"2018-03-01"}}).sort("date",1)
 gdpDict={}
 for gdpData in gdpCursor:
     gdpDict[gdpData["date"]]=gdpData
@@ -31,8 +34,13 @@ for dailyData in dailyCursor:
     date.append(dailyData["_id"])
     dt = datetime.strptime(dailyData["_id"], "%Y%m%d") 
     quarter = int(dt.month/3)
-    gdp = gdpDict[getGdpDate(dt.year,quarter)]['gdp']
-    amountGdpRate.append(dailyData['market_amount']/gdp)
+    gdpDate = getGdpDate(dt.year,quarter)
+    formatDate = datetime.strptime(gdpDate, "%Y-%m-%d")
+    formatDate1 = (formatDate + relativedelta(months=-3) ).strftime("%Y-%m-%d") 
+    formatDate2 = (formatDate + relativedelta(months=-6) ).strftime("%Y-%m-%d") 
+    formatDate3 = (formatDate + relativedelta(months=-9) ).strftime("%Y-%m-%d") 
+    gdp = gdpDict[gdpDate]['curGdp'] + gdpDict[formatDate1]['curGdp'] + gdpDict[formatDate2]['curGdp'] + gdpDict[formatDate3]['curGdp']
+    amountGdpRate.append(round(dailyData['market_amount']/gdp,3))
 
 import pyecharts.options as opts
 from pyecharts.charts import Line
