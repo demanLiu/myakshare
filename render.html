@@ -7,11 +7,11 @@
 
 </head>
 <body>
-    <div id="9bc88c6ff3404dfb9c8109151b12a0af" class="chart-container" style="width:900px; height:500px;"></div>
+    <div id="60ca9e7d13eb452fbf8167d81c504b75" class="chart-container" style="width:1800px; height:500px;"></div>
     <script>
-        var chart_9bc88c6ff3404dfb9c8109151b12a0af = echarts.init(
-            document.getElementById('9bc88c6ff3404dfb9c8109151b12a0af'), 'white', {renderer: 'canvas'});
-        var option_9bc88c6ff3404dfb9c8109151b12a0af = {
+        var chart_60ca9e7d13eb452fbf8167d81c504b75 = echarts.init(
+            document.getElementById('60ca9e7d13eb452fbf8167d81c504b75'), 'white', {renderer: 'canvas'});
+        var option_60ca9e7d13eb452fbf8167d81c504b75 = {
     "animation": true,
     "animationThreshold": 2000,
     "animationDuration": 1000,
@@ -2900,8 +2900,29 @@
                     }
                 ]
             },
+            "markLine": {
+                "silent": false,
+                "precision": 2,
+                "label": {
+                    "show": true,
+                    "position": "top",
+                    "margin": 8
+                },
+                "data": [
+                    {
+                        "name": "\u5e73\u5747\u503c",
+                        "type": "average"
+                    }
+                ]
+            },
             "zlevel": 0,
-            "z": 0
+            "z": 0,
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
         }
     ],
     "legend": [
@@ -3700,7 +3721,7 @@
         }
     ]
 };
-        chart_9bc88c6ff3404dfb9c8109151b12a0af.setOption(option_9bc88c6ff3404dfb9c8109151b12a0af);
+        chart_60ca9e7d13eb452fbf8167d81c504b75.setOption(option_60ca9e7d13eb452fbf8167d81c504b75);
     </script>
 </body>
 </html>

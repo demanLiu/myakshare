@@ -1,4 +1,5 @@
 import sys
+from turtle import width
 sys.path.append(".")
 import utils.mongodbUtil as mongodbUtil
 from  datetime import datetime,timedelta
@@ -48,7 +49,7 @@ import pyecharts.options as opts
 from pyecharts.charts import Line
 
 (
-    Line()
+    Line(init_opts=opts.InitOpts(width='1800px'))
     # 全局配置
     .set_global_opts(xaxis_opts=opts.AxisOpts(is_scale=True),yaxis_opts=opts.AxisOpts(is_scale=True),datazoom_opts=[opts.DataZoomOpts(type_="slider")])
     # x轴
@@ -80,6 +81,13 @@ from pyecharts.charts import Line
             ],
             label_opts = opts.LabelOpts(position="inside", color="#fff"),          
         ),
+    )
+    .set_series_opts(
+        markline_opts=opts.MarkLineOpts(
+            data=[
+                opts.MarkLineItem(name="平均值", type_='average')
+            ]
+        )
     )
     # 输出为HTML文件
     .render()
