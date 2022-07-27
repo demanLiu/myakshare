@@ -50,13 +50,37 @@ from pyecharts.charts import Line
 (
     Line()
     # 全局配置
-    .set_global_opts(xaxis_opts=opts.AxisOpts(is_scale=True),datazoom_opts=[opts.DataZoomOpts(type_="slider")])
+    .set_global_opts(xaxis_opts=opts.AxisOpts(is_scale=True),yaxis_opts=opts.AxisOpts(is_scale=True),datazoom_opts=[opts.DataZoomOpts(type_="slider")])
     # x轴
     .add_xaxis(xaxis_data=date)
     # y轴
     .add_yaxis(
         series_name="",         # 数据所属集合的名称
         y_axis=amountGdpRate,            # y轴数据
+        is_smooth=True,
+      markpoint_opts=opts.MarkPointOpts(
+            # 标记点数据
+            data=[
+                # MarkPointItem：标记点数据项
+                opts.MarkPointItem(
+                    # 特殊的标注类型，用于标注最大值最小值等。可选:
+                    # 'min' 最大值、'max' 最大值 、'average' 平均值。
+                    # 自己试了一下，如果同时设置type_和coord，只会显示coord的标记点
+                    # type_ = 'min',
+                    type_ = 'min',
+                    ),
+                    
+                opts.MarkPointItem(
+                    # 特殊的标注类型，用于标注最大值最小值等。可选:
+                    # 'min' 最大值、'max' 最大值 、'average' 平均值。
+                    # 自己试了一下，如果同时设置type_和coord，只会显示coord的标记点
+                    # type_ = 'min',
+                    type_ = 'max',
+                    
+                    )
+                    ],
+            label_opts = opts.LabelOpts(position="inside", color="#fff"),          
+        ),
     )
     # 输出为HTML文件
     .render()
