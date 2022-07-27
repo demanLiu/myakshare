@@ -67,18 +67,17 @@ from pyecharts.charts import Line
                     # 'min' 最大值、'max' 最大值 、'average' 平均值。
                     # 自己试了一下，如果同时设置type_和coord，只会显示coord的标记点
                     # type_ = 'min',
-                    type_ = 'min',
-                    ),
-                    
+                    type_='min',
+                ),
+
                 opts.MarkPointItem(
                     # 特殊的标注类型，用于标注最大值最小值等。可选:
                     # 'min' 最大值、'max' 最大值 、'average' 平均值。
                     # 自己试了一下，如果同时设置type_和coord，只会显示coord的标记点
                     # type_ = 'min',
-                    type_ = 'max',
-                    
-                    )
-                    ],
+                    type_='max',
+                )
+            ],
             label_opts = opts.LabelOpts(position="inside", color="#fff"),          
         ),
     )
