@@ -51,7 +51,7 @@ from pyecharts.charts import Line
 (
     Line(init_opts=opts.InitOpts(width='1800px'))
     # 全局配置
-    .set_global_opts(xaxis_opts=opts.AxisOpts(is_scale=True),yaxis_opts=opts.AxisOpts(is_scale=True),datazoom_opts=[opts.DataZoomOpts(type_="slider")])
+    .set_global_opts(xaxis_opts=opts.AxisOpts(is_scale=True), yaxis_opts=opts.AxisOpts(is_scale=True), datazoom_opts=[opts.DataZoomOpts(type_="slider")])
     # x轴
     .add_xaxis(xaxis_data=date)
     # y轴
@@ -59,7 +59,7 @@ from pyecharts.charts import Line
         series_name="",         # 数据所属集合的名称
         y_axis=amountGdpRate,            # y轴数据
         is_smooth=True,
-      markpoint_opts=opts.MarkPointOpts(
+        markpoint_opts=opts.MarkPointOpts(
             # 标记点数据
             data=[
                 # MarkPointItem：标记点数据项
@@ -79,7 +79,7 @@ from pyecharts.charts import Line
                     type_='max',
                 )
             ],
-            label_opts = opts.LabelOpts(position="inside", color="#fff"),          
+            label_opts=opts.LabelOpts(position="inside", color="#fff"),
         ),
     )
     .set_series_opts(
