@@ -48,7 +48,7 @@ from pyecharts.charts import Line
 (
     Line()
     # 全局配置
-    .set_global_opts()
+    .set_global_opts(xaxis_opts=opts.AxisOpts(is_scale=True),datazoom_opts=[opts.DataZoomOpts(type_="slider")])
     # x轴
     .add_xaxis(xaxis_data=date)
     # y轴
