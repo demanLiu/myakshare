@@ -24,13 +24,15 @@ for gdpData in gdpCursor:
 
 pipeline = [
     {'$match': {"type": {"$in": ["sh", "sz"]}}},
-    {'$group': {'_id': "$date", 'market_amount': {'$sum': "$market_amount"},'deal_amount': {'$sum': "$deal_amount"}}},
+    {'$group': {'_id': "$date", "count":{"$sum":1},'market_amount': {'$sum': "$market_amount"},'deal_amount': {'$sum': "$deal_amount"}}},
     {"$sort": {"_id": 1}}
 ]
 date=[]
 amountGdpRate=[]
 dailyCursor = dailyCol.aggregate(pipeline)
 for dailyData in dailyCursor:
+    if dailyData['count'] != 2:
+        continue
     date.append(dailyData["_id"])
     dt = datetime.strptime(dailyData["_id"], "%Y%m%d") 
     quarter = int(dt.month/3)

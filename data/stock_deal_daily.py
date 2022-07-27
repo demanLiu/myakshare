@@ -102,5 +102,6 @@ def sz_deal_daily(start,  col):
         col.bulk_write(updateOp)
 
 # 2022-07-22
+#20200414  20220217 上证没数据
 sh_deal_daily(start, end1, col)
 sz_deal_daily(start,  col)
