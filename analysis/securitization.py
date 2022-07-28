@@ -51,7 +51,8 @@ from pyecharts.charts import Line
 (
     Line(init_opts=opts.InitOpts(width='1800px'))
     # 全局配置
-    .set_global_opts(xaxis_opts=opts.AxisOpts(is_scale=True), yaxis_opts=opts.AxisOpts(is_scale=True), datazoom_opts=[opts.DataZoomOpts(type_="slider")])
+    .set_global_opts(xaxis_opts=opts.AxisOpts(max_interval=200), yaxis_opts=opts.AxisOpts(is_scale=True), datazoom_opts=[opts.DataZoomOpts(type_="slider")],
+                     tooltip_opts=opts.TooltipOpts(trigger="axis"),)
     # x轴
     .add_xaxis(xaxis_data=date)
     # y轴
