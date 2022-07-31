@@ -7,11 +7,11 @@
 
 </head>
 <body>
-    <div id="60ca9e7d13eb452fbf8167d81c504b75" class="chart-container" style="width:1800px; height:500px;"></div>
+    <div id="d3f9b77ef3174027a6a7b7ee82096b5f" class="chart-container" style="width:1800px; height:500px;"></div>
     <script>
-        var chart_60ca9e7d13eb452fbf8167d81c504b75 = echarts.init(
-            document.getElementById('60ca9e7d13eb452fbf8167d81c504b75'), 'white', {renderer: 'canvas'});
-        var option_60ca9e7d13eb452fbf8167d81c504b75 = {
+        var chart_d3f9b77ef3174027a6a7b7ee82096b5f = echarts.init(
+            document.getElementById('d3f9b77ef3174027a6a7b7ee82096b5f'), 'white', {renderer: 'canvas'});
+        var option_d3f9b77ef3174027a6a7b7ee82096b5f = {
     "animation": true,
     "animationThreshold": 2000,
     "animationDuration": 1000,
@@ -2942,7 +2942,7 @@
     ],
     "tooltip": {
         "show": true,
-        "trigger": "item",
+        "trigger": "axis",
         "triggerOn": "mousemove|click",
         "axisPointer": {
             "type": "line"
@@ -2955,7 +2955,7 @@
     "xAxis": [
         {
             "show": true,
-            "scale": true,
+            "scale": false,
             "nameLocation": "end",
             "nameGap": 15,
             "gridIndex": 0,
@@ -2963,6 +2963,7 @@
             "offset": 0,
             "splitNumber": 5,
             "minInterval": 0,
+            "maxInterval": 200,
             "splitLine": {
                 "show": false,
                 "lineStyle": {
@@ -3721,7 +3722,7 @@
         }
     ]
 };
-        chart_60ca9e7d13eb452fbf8167d81c504b75.setOption(option_60ca9e7d13eb452fbf8167d81c504b75);
+        chart_d3f9b77ef3174027a6a7b7ee82096b5f.setOption(option_d3f9b77ef3174027a6a7b7ee82096b5f);
     </script>
 </body>
 </html>

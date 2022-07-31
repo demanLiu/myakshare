@@ -1,5 +1,5 @@
 import sys
-from turtle import width
+
 sys.path.append(".")
 import utils.mongodbUtil as mongodbUtil
 from  datetime import datetime,timedelta
