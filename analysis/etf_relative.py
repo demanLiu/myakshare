@@ -1,3 +1,4 @@
+from regex import P
 import yaml
 import sys
 sys.path.append(".")
@@ -26,6 +27,14 @@ fundList.extend(goldList)
 fundList.extend(matureList)
 print(fundList)
 fundTuple = tuple(fundList)
-comparison = xa.evaluate(*fundTuple)
-comparison.v_netvalue()  
-comparison.correlation_table() 
+comparison = xa.evaluate(*fundTuple,start='20220501')
+table = comparison.correlation_table()
+resultDict = {}
+for colCode, dict in table.iterrows():
+    resultDict[colCode]={}
+    resultDict[colCode]["strong"]=[]
+    for  rowCode  in dict.keys():
+        if dict[rowCode]>0.7 and rowCode != colCode:
+            resultDict[colCode]['strong'].append(rowCode)
+    print(colCode+':' )
+    print(resultDict[colCode]['strong'])
